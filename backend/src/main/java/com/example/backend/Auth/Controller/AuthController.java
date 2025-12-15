@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 
@@ -18,7 +17,6 @@ import com.example.backend.Auth.UtilSecurity.SecurityUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.Optional;
 import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")

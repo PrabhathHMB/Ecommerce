@@ -1,17 +1,15 @@
 package com.example.backend.Auth.service;
 
-import com.example.backend.Auth.service.UserService;
 import com.example.backend.Auth.model.User;
 import com.example.backend.Auth.model.UserDetail;
 import com.example.backend.Auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.backend.Auth.Enums.Role;
 import org.springframework.security.access.AccessDeniedException;
 
 import com.example.backend.Auth.UtilSecurity.SecurityUtil;
-import com.example.backend.Auth.UtilSecurity.SecurityUtil.*;
+//import com.example.backend.Auth.UtilSecurity.SecurityUtil.*;
 import java.util.Optional;
 import java.util.Map;
 import com.example.backend.Auth.Enums.Role;

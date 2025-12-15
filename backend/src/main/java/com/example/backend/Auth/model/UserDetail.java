@@ -1,7 +1,7 @@
 package com.example.backend.Auth.model;
 
-import com.example.backend.Auth.model.BillingAddress;
-import com.example.backend.Auth.model.CardDetails;
+//import com.example.backend.Auth.model.BillingAddress;
+//import com.example.backend.Auth.model.CardDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
 @Getter

@@ -13,24 +13,26 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.example.backend.Auth.service.UserService;
 import com.example.backend.Auth.model.User;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserService userService, JwtUtil jwtUtil) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
