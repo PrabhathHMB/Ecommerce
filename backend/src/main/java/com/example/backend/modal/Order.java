@@ -1,7 +1,7 @@
 package com.example.backend.modal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zosh.user.domain.OrderStatus;
+import com.example.backend.user.domain.OrderStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
