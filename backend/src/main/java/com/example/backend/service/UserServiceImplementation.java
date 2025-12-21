@@ -1,14 +1,14 @@
-package com.zosh.service;
+package com.example.backend.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.zosh.config.JwtTokenProvider;
-import com.zosh.exception.UserException;
-import com.zosh.modal.User;
-import com.zosh.repository.UserRepository;
+import com.example.backend.config.JwtTokenProvider;
+import com.example.backend.exception.UserException;
+import com.example.backend.modal.User;
+import com.example.backend.repository.UserRepository;
 
 @Service
 public class UserServiceImplementation implements UserService {

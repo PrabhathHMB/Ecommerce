@@ -1,9 +1,9 @@
-package com.zosh.service;
+package com.example.backend.service;
 
 import java.util.List;
 
-import com.zosh.exception.UserException;
-import com.zosh.modal.User;
+import com.example.backend.exception.UserException;
+import com.example.backend.modal.User;
 
 public interface UserService {
 	

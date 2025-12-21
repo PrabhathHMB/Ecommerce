@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.zosh.exception.ProductException;
-import com.zosh.modal.Product;
-import com.zosh.modal.Review;
-import com.zosh.modal.User;
-import com.zosh.repository.ProductRepository;
-import com.zosh.repository.ReviewRepository;
-import com.zosh.request.ReviewRequest;
+import com.example.backend.exception.ProductException;
+import com.example.backend.modal.Product;
+import com.example.backend.modal.Review;
+import com.example.backend.modal.User;
+import com.example.backend.repository.ProductRepository;
+import com.example.backend.repository.ReviewRepository;
+import com.example.backend.request.ReviewRequest;
 
 @Service
 public class ReviewServiceImplementation implements ReviewService {
