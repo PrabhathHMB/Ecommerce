@@ -71,14 +71,14 @@ public class PaymentController {
 
         // Generate MD5 Hash
         // Hash Format: uppercase(md5(merchant_id + order_id + amount + currency + uppercase(md5(merchant_secret))))
-        String hash = generatePayHereHash(merchantId, order.getId().toString(), amountFormatted, currency, merchantSecret);
+        String hash = generatePayHereHash(merchantId, order.getId(), amountFormatted, currency, merchantSecret);
 
         PayHereResponse response = new PayHereResponse();
         response.setMerchantId(merchantId);
         response.setReturnUrl(returnUrl);
         response.setCancelUrl(cancelUrl);
         response.setNotifyUrl(notifyUrl);
-        response.setOrderId(order.getId().toString());
+        response.setOrderId(order.getId());
         response.setItems("Order #" + order.getId());
         response.setCurrency(currency);
         response.setAmount(order.getTotalPrice());
