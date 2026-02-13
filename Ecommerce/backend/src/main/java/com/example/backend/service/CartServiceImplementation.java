@@ -54,7 +54,7 @@ public class CartServiceImplementation implements CartService{
 		Cart cart=cartRepository.findByUser_Id(userId);
 		Product product=productService.findProductById(req.getProductId());
 		
-		CartItem isPresent=cartItemService.isCartItemExist(cart, product, req.getSize(),userId);
+		CartItem isPresent=cartItemService.isCartItemExist(cart, product, req.getSize(),userId, req.getColor());
 		System.out.println("DEBUG: isCartItemExist result: " + isPresent);
 		
 		if(isPresent == null) {
@@ -67,6 +67,7 @@ public class CartServiceImplementation implements CartService{
 			int price=req.getQuantity()*product.getDiscountedPrice();
 			cartItem.setPrice(price);
 			cartItem.setSize(req.getSize());
+			cartItem.setColor(req.getColor());
 			
 			CartItem createdCartItem=cartItemService.createCartItem(cartItem);
 			System.out.println("DEBUG: Created CartItem with ID: " + createdCartItem.getId());

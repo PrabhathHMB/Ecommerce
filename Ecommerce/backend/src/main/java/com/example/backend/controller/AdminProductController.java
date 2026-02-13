@@ -30,15 +30,19 @@ public class AdminProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Product> createProductHandler(@RequestBody CreateProductRequest req) throws ProductException{
-		System.out.println("createProduct handler called...");
-		System.out.println("Request data: " + req.getTitle() + ", top: " + req.getTopLavelCategory());
-		
-		Product createdProduct = productService.createProduct(req);
-		System.out.println("Product created in service: " + createdProduct.getId());
-		
-		return new ResponseEntity<Product>(createdProduct,HttpStatus.ACCEPTED);
-		
+	public ResponseEntity<?> createProductHandler(@RequestBody CreateProductRequest req) throws ProductException{
+		try {
+			System.out.println("createProduct handler called...");
+			System.out.println("Request data: " + req.getTitle() + ", top: " + req.getTopLavelCategory());
+			
+			Product createdProduct = productService.createProduct(req);
+			System.out.println("Product created in service: " + createdProduct.getId());
+			
+			return new ResponseEntity<Product>(createdProduct,HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@DeleteMapping("/{productId}/delete")
