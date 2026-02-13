@@ -35,7 +35,7 @@ public class CartItemServiceImplementation implements CartItemService {
 		cartItem.setDiscountedPrice(cartItem.getProduct().getDiscountedPrice()*cartItem.getQuantity());
 		
 		CartItem createdCartItem=cartItemRepository.save(cartItem);
-		System.out.println("DEBUG: CartItem saved to DB. ID: " + createdCartItem.getId());
+		System.out.println("DEBUG: CartItem saved to DB. ID: " + createdCartItem.getId() + " Color: " + cartItem.getColor());
 		
 		return createdCartItem;
 	}
@@ -72,10 +72,10 @@ public class CartItemServiceImplementation implements CartItemService {
 	}
 
 	@Override
-	public CartItem isCartItemExist(Cart cart, Product product, String size, String userId) {
+	public CartItem isCartItemExist(Cart cart, Product product, String size, String userId, String color) {
 		
-		CartItem cartItem=cartItemRepository.findByCart_IdAndProduct_IdAndSizeAndUserId(
-			cart.getId(), product.getId(), size, userId);
+		CartItem cartItem = cartItemRepository.findByCart_IdAndProduct_IdAndSizeAndUserIdAndColor(
+			cart.getId(), product.getId(), size, userId, color);
 		
 		return cartItem;
 	}

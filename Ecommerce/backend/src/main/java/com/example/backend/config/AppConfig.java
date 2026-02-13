@@ -32,6 +32,7 @@ public class AppConfig {
                 .requestMatchers("/api/products/**").permitAll()
                 .requestMatchers("/api/ai/**").permitAll()
                 .requestMatchers("/api/categories/**").permitAll()
+                .requestMatchers("/api/debug/**").permitAll()
                 
                 // Protect all other API endpoints
                 .requestMatchers("/api/**").authenticated()
