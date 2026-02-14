@@ -1,0 +1,157 @@
+.product-filter {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+}
+
+.product-filter:hover {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+}
+
+.product-filter h3 {
+    margin-bottom: 30px;
+    color: #222;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.filter-section {
+    margin-bottom: 35px;
+}
+
+.filter-section h4 {
+    margin-bottom: 15px;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Category Specifics */
+.category-selects {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Price Range Buttons */
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-options button {
+    padding: 12px 16px;
+    border: 1px solid #eee;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #444;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.filter-options button:hover {
+    border-color: #667eea;
+    color: #667eea;
+    background: #f8faff;
+    transform: translateX(4px);
+}
+
+/* Color Options */
+.color-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.color-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.color-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.color-btn::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.color-btn:hover::after {
+    border-color: #e0e0e0;
+}
+
+/* Specific colors */
+.color-btn.black {
+    background: #000;
+}
+
+.color-btn.white {
+    background: #fff;
+    border: 1px solid #eee;
+}
+
+.color-btn.red {
+    background: #ff4757;
+}
+
+.color-btn.blue {
+    background: #3742fa;
+}
+
+.color-btn.green {
+    background: #2ed573;
+}
+
+.color-btn.pink {
+    background: #ff6b81;
+}
+
+/* Reset Button */
+.reset-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #f8f9fa;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    background-color: #e9ecef;
+    color: #333;
+}
