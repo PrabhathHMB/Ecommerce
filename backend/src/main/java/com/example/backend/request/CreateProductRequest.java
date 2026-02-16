@@ -1,11 +1,11 @@
 package com.example.backend.request;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import com.example.backend.modal.Category;
-import com.example.backend.modal.Size;
-import com.example.backend.user.domain.ProductSize;
+import com.example.backend.modal.size;
 
 public class CreateProductRequest {
 
@@ -25,19 +25,41 @@ public class CreateProductRequest {
 
 	private String color;
 
-	private Set<Size> size = new HashSet<>();
+	private List<String> colors = new ArrayList<>();
+
+	public List<String> getColors() {
+		return colors;
+	}
+
+	public void setColors(List<String> colors) {
+		this.colors = colors;
+	}
+
+	private Set<size> size = new HashSet<>();
 
 	private String imageUrl;
+	
+	private List<String> images = new ArrayList<>();
+
+	public List<String> getImages() {
+		return images;
+	}
+
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
+	
+	private String sizeChart;
 
 	private String topLavelCategory;
 	private String secondLavelCategory;
 	private String thirdLavelCategory;
 
-	public Set<Size> getSize() {
+	public Set<size> getSize() {
 		return size;
 	}
 
-	public void setSize(Set<Size> size) {
+	public void setSize(Set<size> size) {
 		this.size = size;
 	}
 
@@ -111,6 +133,14 @@ public class CreateProductRequest {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getSizeChart() {
+		return sizeChart;
+	}
+
+	public void setSizeChart(String sizeChart) {
+		this.sizeChart = sizeChart;
 	}
 
 	public String getTopLavelCategory() {

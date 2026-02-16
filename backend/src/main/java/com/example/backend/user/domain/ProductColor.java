@@ -2,7 +2,7 @@ package com.example.backend.user.domain;
 
 public enum ProductColor {
 
-	 	BLACK,
+	BLACK,
 	    WHITE,
 	    RED,
 	    GREEN,

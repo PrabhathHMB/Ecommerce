@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 
 
 
@@ -68,11 +69,17 @@ public class GlobleException {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ErrorDetails> badCredentialsExceptionHandler(BadCredentialsException e, WebRequest req){
+		ErrorDetails err= new ErrorDetails(e.getMessage(),req.getDescription(false),LocalDateTime.now());
+		return new ResponseEntity<ErrorDetails>(err,HttpStatus.BAD_REQUEST);
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorDetails> otherExceptionHandler(Exception e, WebRequest req){
 		ErrorDetails error=new ErrorDetails(e.getMessage(),req.getDescription(false),LocalDateTime.now());
 		
-		return new ResponseEntity<ErrorDetails>(error,HttpStatus.ACCEPTED);
+		return new ResponseEntity<ErrorDetails>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

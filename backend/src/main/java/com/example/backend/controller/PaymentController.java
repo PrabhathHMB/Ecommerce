@@ -1,155 +1,225 @@
 package com.example.backend.controller;
 
-import org.json.JSONObject;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.backend.exception.OrderException;
 import com.example.backend.exception.UserException;
 import com.example.backend.modal.Order;
-import com.example.backend.modal.User;
 import com.example.backend.repository.OrderRepository;
-import com.example.backend.response.ApiResponse;
-import com.example.backend.response.PaymentLinkResponse;
+import com.example.backend.responce.ApiResponse;
+import com.example.backend.responce.PayHereResponse;
 import com.example.backend.service.OrderService;
 import com.example.backend.service.UserService;
 import com.example.backend.user.domain.OrderStatus;
 import com.example.backend.user.domain.PaymentStatus;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.razorpay.Payment;
-import com.razorpay.PaymentLink;
-import com.razorpay.RazorpayClient;
-import com.razorpay.RazorpayException;
 
 @RestController
 @RequestMapping("/api")
 public class PaymentController {
-	
-	   @Value("${razorpay.api.key}")
-	    private String apiKey;
 
-	    @Value("${razorpay.api.secret}")
-	    private String apiSecret;
-	
-	private OrderService orderService;
-	private UserService userService;
-	private OrderRepository orderRepository;
-	
-	public PaymentController(OrderService orderService,UserService userService,OrderRepository orderRepository) {
-		this.orderService=orderService;
-		this.userService=userService;
-		this.orderRepository=orderRepository;
-	}
-	
-	@PostMapping("/payments/{orderId}")
-	public ResponseEntity<PaymentLinkResponse>createPaymentLink(@PathVariable Long orderId,
-			@RequestHeader("Authorization")String jwt) 
-					throws RazorpayException, UserException, OrderException{
-		
-		Order order=orderService.findOrderById(orderId);
-		 try {
-		      // Instantiate a Razorpay client with your key ID and secret
-		      RazorpayClient razorpay = new RazorpayClient(apiKey, apiSecret);
+    @Value("${payhere.merchant.id}")
+    private String merchantId;
 
-		      // Create a JSON object with the payment link request parameters
-		      JSONObject paymentLinkRequest = new JSONObject();
-		      paymentLinkRequest.put("amount",order.getTotalPrice()* 100);
-		      paymentLinkRequest.put("currency","INR");    
-//		      paymentLinkRequest.put("expire_by",1691097057);
-//		      paymentLinkRequest.put("reference_id",order.getId().toString());
-		     
+    @Value("${payhere.merchant.secret}")
+    private String merchantSecret;
+    
+    @Value("${payhere.base.url}")
+    private String payhereUrl;
 
-		      // Create a JSON object with the customer details
-		      JSONObject customer = new JSONObject();
-		      customer.put("name",order.getUser().getFirstName()+" "+order.getUser().getLastName());
-		      customer.put("contact",order.getUser().getMobile());
-		      customer.put("email",order.getUser().getEmail());
-		      paymentLinkRequest.put("customer",customer);
+    @Value("${payhere.return.url}")
+    private String returnUrl;
 
-		      // Create a JSON object with the notification settings
-		      JSONObject notify = new JSONObject();
-		      notify.put("sms",true);
-		      notify.put("email",true);
-		      paymentLinkRequest.put("notify",notify);
+    @Value("${payhere.cancel.url}")
+    private String cancelUrl;
+    
+    @Value("${payhere.notify.url}")
+    private String notifyUrl;
 
-		      // Set the reminder settings
-		      paymentLinkRequest.put("reminder_enable",true);
+    private final OrderService orderService;
+    private final OrderRepository orderRepository;
+    private final com.example.backend.service.CartService cartService;
 
-		      // Set the callback URL and method
-		      paymentLinkRequest.put("callback_url","http://localhost:4200/payment-success?order_id="+orderId);
-		      paymentLinkRequest.put("callback_method","get");
+    public PaymentController(OrderService orderService, UserService userService, OrderRepository orderRepository, com.example.backend.service.CartService cartService) {
+        this.orderService = orderService;
+        this.orderRepository = orderRepository;
+        this.cartService = cartService;
+    }
 
-		      // Create the payment link using the paymentLink.create() method
-		      PaymentLink payment = razorpay.paymentLink.create(paymentLinkRequest);
-		      
-		      String paymentLinkId = payment.get("id");
-		      String paymentLinkUrl = payment.get("short_url");
-		      
-		      PaymentLinkResponse res=new PaymentLinkResponse(paymentLinkUrl,paymentLinkId);
-		      
-		      PaymentLink fetchedPayment = razorpay.paymentLink.fetch(paymentLinkId);
-		      
-		      order.setOrderId(fetchedPayment.get("order_id"));
-		      orderRepository.save(order);
-		      
-		   // Print the payment link ID and URL
-		      System.out.println("Payment link ID: " + paymentLinkId);
-		      System.out.println("Payment link URL: " + paymentLinkUrl);
-		      System.out.println("Order Id : "+fetchedPayment.get("order_id")+fetchedPayment);
-		      
-		      return new ResponseEntity<PaymentLinkResponse>(res,HttpStatus.ACCEPTED);
-		      
-		    } catch (RazorpayException e) {
-		    	
-		      System.out.println("Error creating payment link: " + e.getMessage());
-		      throw new RazorpayException(e.getMessage());
-		    }
-		
-		
-//		order_id
-	}
-	
-  @GetMapping("/payments")
-  public ResponseEntity<ApiResponse> redirect(@RequestParam(name="payment_id") String paymentId,@RequestParam("order_id")Long orderId) throws RazorpayException, OrderException {
-	  RazorpayClient razorpay = new RazorpayClient(apiKey, apiSecret);
-	  Order order =orderService.findOrderById(orderId);
-	
-	  try {
-		
-		
-		Payment payment = razorpay.payments.fetch(paymentId);
-		System.out.println("payment details --- "+payment+payment.get("status"));
-		
-		if(payment.get("status").equals("captured")) {
-			System.out.println("payment details --- "+payment+payment.get("status"));
-		  
-			order.getPaymentDetails().setPaymentId(paymentId);
-			order.getPaymentDetails().setStatus(PaymentStatus.COMPLETED);
-			order.setOrderStatus(OrderStatus.PLACED);
-//			order.setOrderItems(order.getOrderItems());
-			System.out.println(order.getPaymentDetails().getStatus()+"payment status ");
-			orderRepository.save(order);
-		}
-		ApiResponse res=new ApiResponse("your order get placed", true);
-	      return new ResponseEntity<ApiResponse>(res,HttpStatus.OK);
-	      
-	} catch (Exception e) {
-		System.out.println("errrr payment -------- ");
-		new RedirectView("https://shopwithzosh.vercel.app/payment/failed");
-		throw new RazorpayException(e.getMessage());
-	}
+    // 1. Initiate Payment: Generate Hash and send data to Frontend
+    @PostMapping("/payments/{orderId}")
+    public ResponseEntity<PayHereResponse> createPaymentLink(@PathVariable String orderId,
+            @RequestHeader("Authorization") String jwt) throws UserException, OrderException {
 
-  }
+        Order order = orderService.findOrderById(orderId);
 
+        // Format amount to 2 decimal places (Required by PayHere for hash)
+        DecimalFormat df = new DecimalFormat("0.00");
+        String amountFormatted = df.format(order.getTotalPrice());
+        String currency = "LKR";
+
+        // Generate MD5 Hash
+        // Hash Format: uppercase(md5(merchant_id + order_id + amount + currency + uppercase(md5(merchant_secret))))
+        String hash = generatePayHereHash(merchantId, order.getId(), amountFormatted, currency, merchantSecret);
+
+        PayHereResponse response = new PayHereResponse();
+        response.setMerchantId(merchantId);
+        response.setReturnUrl(returnUrl);
+        response.setCancelUrl(cancelUrl);
+        response.setNotifyUrl(notifyUrl);
+        response.setOrderId(order.getId());
+        response.setItems("Order #" + order.getId());
+        response.setCurrency(currency);
+        response.setAmount(order.getTotalPrice());
+        response.setFirstName(order.getUser().getFirstName());
+        response.setLastName(order.getUser().getLastName());
+        response.setEmail(order.getUser().getEmail());
+        response.setPhone(order.getUser().getMobile());
+        response.setAddress(order.getShippingAddress().getStreetAddress());
+        response.setCity(order.getShippingAddress().getCity());
+        response.setCountry("Sri Lanka");
+        response.setHash(hash);
+        response.setUrl(payhereUrl);
+
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    // 3. Handle Cash On Delivery
+    @PostMapping("/payments/cod/{orderId}")
+    public ResponseEntity<ApiResponse> combineCodPayment(@PathVariable String orderId,
+            @RequestHeader("Authorization") String jwt) throws UserException, OrderException {
+    	
+    	Order order = orderService.findOrderById(orderId);
+    	
+    	try {
+            order.getPaymentDetails().setPaymentId("COD-" + order.getId());
+            order.getPaymentDetails().setStatus(PaymentStatus.PENDING); // Payment pending until delivery
+            order.setOrderStatus(OrderStatus.PLACED);
+            
+            orderRepository.save(order);
+            
+            // Clear Cart
+            cartService.clearCart(order.getUser().getId());
+            
+            ApiResponse res = new ApiResponse("COD Order Placed Successfully", true);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+            
+        } catch (Exception e) {
+            throw new OrderException(e.getMessage());
+        }
+    }
+
+    // 4. Simulate Payment Success (FOR TESTING/LOCALHOST ONLY)
+    @PostMapping("/payments/{orderId}/success-test")
+    public ResponseEntity<ApiResponse> simulatePaymentSuccess(@PathVariable String orderId,
+            @RequestHeader("Authorization") String jwt) throws UserException, OrderException {
+        
+        Order order = orderService.findOrderById(orderId);
+        
+        try {
+            order.getPaymentDetails().setPaymentId("TEST-" + order.getId());
+            order.getPaymentDetails().setStatus(PaymentStatus.COMPLETED);
+            order.setOrderStatus(OrderStatus.PLACED); // Changed to PLACED to match COD
+            
+            orderRepository.save(order);
+            
+            // Clear Cart
+            cartService.clearCart(order.getUser().getId());
+            
+            ApiResponse res = new ApiResponse("Test Payment Confirmed Successfully", true);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+            
+        } catch (Exception e) {
+            throw new OrderException(e.getMessage());
+        }
+    }
+
+    // 2. Handle PayHere Notify (Webhook)
+    // PayHere calls this URL automatically when payment is successful
+    @PostMapping("/payments/notify")
+    public ResponseEntity<String> payHereNotify(@RequestParam Map<String, String> formData) {
+        
+        String orderIdReq = formData.get("order_id");
+        String payhereAmount = formData.get("payhere_amount");
+        String payhereCurrency = formData.get("payhere_currency");
+        String statusCode = formData.get("status_code");
+        String md5sig = formData.get("md5sig");
+
+        // 1. Verify Hash securely
+        String localMd5 = generatePayHereHash(merchantId, orderIdReq, payhereAmount, payhereCurrency, merchantSecret);
+
+        System.out.println("PayHere Notify: orderId=" + orderIdReq + " status=" + statusCode);
+        System.out.println("Local Hash: " + localMd5);
+        System.out.println("PayHere Hash: " + md5sig);
+
+        if (localMd5.equals(md5sig)) {
+            // NOTE: In production, you MUST check && statusCode.equals("2")
+            // Removed for testing to allow "Card Denied" to still mark order as success per user request
+            // Status Code 2 means Success
+            try {
+                Order order = orderService.findOrderById(orderIdReq);
+                
+                order.getPaymentDetails().setPaymentId(formData.get("payment_id"));
+                order.getPaymentDetails().setStatus(PaymentStatus.COMPLETED);
+                order.setOrderStatus(OrderStatus.PLACED);
+                
+                orderRepository.save(order);
+                
+                // Clear Cart
+                cartService.clearCart(order.getUser().getId());
+                
+                System.out.println("Payment Success for Order ID: " + orderIdReq);
+                return new ResponseEntity<>(HttpStatus.OK);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            System.out.println("Payment Verification Failed or Cancelled");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Helper method to generate MD5 Hash
+    private String generatePayHereHash(String merchantId, String orderId, String amount, String currency, String merchantSecret) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            
+            // 1. Hash the secret first
+            md.update(merchantSecret.getBytes());
+            byte[] secretBytes = md.digest();
+            String merchantSecretMd5 = toHexString(secretBytes).toUpperCase();
+            
+            // 2. Hash the connection string
+            String strToHash = merchantId + orderId + amount + currency + merchantSecretMd5;
+            md.update(strToHash.getBytes());
+            byte[] hashBytes = md.digest();
+            
+            return toHexString(hashBytes).toUpperCase();
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Error generating hash", e);
+        }
+    }
+
+    // Helper to convert byte array to Hex String
+    private String toHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
 }

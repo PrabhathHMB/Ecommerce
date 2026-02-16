@@ -1,70 +1,65 @@
 package com.example.backend.modal;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.example.backend.user.domain.OrderStatus;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.example.backend.user.domain.OrderStatus;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "orders")
+@Document(collection = "orders")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String orderId;
   
-    @ManyToOne
+    @DBRef
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @DBRef
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDate orderDate = LocalDate.now();
 
     private LocalDate deliveryDate;
 
-    @OneToOne
+    @DBRef
     private Address shippingAddress;
 
-    @Embedded
-    private PaymentDetails paymentDetails=new PaymentDetails();
+    private PaymentDetails paymentDetails = new PaymentDetails();
 
     private double totalPrice;
     
     private Integer totalDiscountedPrice;
     
     private Integer discount;
+    
+    private int deliveryCharges;
 
     private OrderStatus orderStatus;
     
     private int totalItem;
     
     private LocalDateTime createdAt;
+
+    private String cancellationReason;
+
+    private String returnReason;
 
 
 }

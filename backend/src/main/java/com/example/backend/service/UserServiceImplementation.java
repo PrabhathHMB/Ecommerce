@@ -24,7 +24,7 @@ public class UserServiceImplementation implements UserService {
 	}
 
 	@Override
-	public User findUserById(Long userId) throws UserException {
+	public User findUserById(String userId) throws UserException {
 		Optional<User> user=userRepository.findById(userId);
 		
 		if(user.isPresent()){
@@ -56,8 +56,29 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public List<User> findAllUsers() {
-		// TODO Auto-generated method stub
+		
 		return userRepository.findAllByOrderByCreatedAtDesc();
+	}
+
+	@Override
+	public void deleteUser(String userId) throws UserException {
+		User user = findUserById(userId);
+		userRepository.delete(user);
+	}
+
+	@Override
+	public User changeUserRole(String userId, String role) throws UserException {
+		User user = findUserById(userId);
+		
+		if (role.equalsIgnoreCase("ADMIN")) {
+			user.setRole("ROLE_ADMIN");
+		} else if (role.equalsIgnoreCase("CUSTOMER")) {
+			user.setRole("ROLE_CUSTOMER");
+		} else {
+			throw new UserException("Invalid role provided: " + role);
+		}
+		
+		return userRepository.save(user);
 	}
 
 }

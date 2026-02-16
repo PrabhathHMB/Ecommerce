@@ -6,7 +6,7 @@ public class LoginRequest {
 	private String password;
 
 	public LoginRequest() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public LoginRequest(String email, String password) {

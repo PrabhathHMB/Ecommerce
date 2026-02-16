@@ -1,0 +1,28 @@
+# Netlify configuration for Vite React app
+[build]
+  # Directory to change to before starting a build
+  base = "frontend"
+  
+  # Build command
+  command = "npm run build"
+  
+  # Directory that contains the deploy-ready HTML files and assets
+  publish = "dist"
+
+# Environment variables (configure these in Netlify dashboard)
+# VITE_API_BASE_URL = "https://your-backend-url.com"
+
+# Redirects for Single Page Application
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Optional: Configure headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

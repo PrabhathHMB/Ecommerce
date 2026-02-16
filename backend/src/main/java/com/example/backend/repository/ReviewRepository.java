@@ -2,15 +2,11 @@ package com.example.backend.repository;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.example.backend.modal.Review;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends MongoRepository<Review, String> {
 
-	@Query("Select r from Rating r where r.product.id=:productId")
-	public List<Review> getAllProductsReview(@Param("productId") Long productId);
+	public List<Review> findByProduct(com.example.backend.modal.Product product);
 }

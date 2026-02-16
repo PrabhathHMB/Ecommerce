@@ -2,12 +2,21 @@ package com.example.backend.user.domain;
 
 public enum ProductSubCategory {
 	
-	SHIRT,
+SHIRT,
 	TSHIRT,
 	SHOES,
 	PAINT,
 	SAREE,
-	KURTA,
-	WATCH
+	WATCH,
+	JEWELRY,
+	BAG,
+	BELT,
+	CAP,
+	GOWNS,
+	JACKET,
+	Trousers,
+	Wallet,
+	Heels
+
 
 }

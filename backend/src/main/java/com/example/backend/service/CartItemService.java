@@ -10,12 +10,15 @@ public interface CartItemService {
 	
 	public CartItem createCartItem(CartItem cartItem);
 	
-	public CartItem updateCartItem(Long userId, Long id,CartItem cartItem) throws CartItemException, UserException;
+	public CartItem updateCartItem(String userId, String id,CartItem cartItem) throws CartItemException, UserException;
 	
-	public CartItem isCartItemExist(Cart cart,Product product,String size, Long userId);
+	public CartItem isCartItemExist(Cart cart,Product product,String size, String userId, String color);
 	
-	public void removeCartItem(Long userId,Long cartItemId) throws CartItemException, UserException;
+	public void removeCartItem(String userId,String cartItemId) throws CartItemException, UserException;
 	
-	public CartItem findCartItemById(Long cartItemId) throws CartItemException;
-	
+	public CartItem findCartItemById(String cartItemId) throws CartItemException;
+    
+    public java.util.Set<CartItem> findCartItemsByCartId(String cartId);
+    
+    public void deleteAllCartItems(String cartId);
 }

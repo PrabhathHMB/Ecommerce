@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.backend.exception.ProductException;
 import com.example.backend.modal.Product;
 import com.example.backend.request.CreateProductRequest;
-import com.example.backend.response.ApiResponse;
+import com.example.backend.responce.ApiResponse;
 import com.example.backend.service.ProductService;
 
 @RestController
@@ -29,17 +29,24 @@ public class AdminProductController {
 		this.productService = productService;
 	}
 	
-	@PostMapping("/")
-	public ResponseEntity<Product> createProductHandler(@RequestBody CreateProductRequest req) throws ProductException{
-		
-		Product createdProduct = productService.createProduct(req);
-		
-		return new ResponseEntity<Product>(createdProduct,HttpStatus.ACCEPTED);
-		
+	@PostMapping
+	public ResponseEntity<?> createProductHandler(@RequestBody CreateProductRequest req) throws ProductException{
+		try {
+			System.out.println("createProduct handler called...");
+			System.out.println("Request data: " + req.getTitle() + ", top: " + req.getTopLavelCategory());
+			
+			Product createdProduct = productService.createProduct(req);
+			System.out.println("Product created in service: " + createdProduct.getId());
+			
+			return new ResponseEntity<Product>(createdProduct,HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@DeleteMapping("/{productId}/delete")
-	public ResponseEntity<ApiResponse> deleteProductHandler(@PathVariable Long productId) throws ProductException{
+	public ResponseEntity<ApiResponse> deleteProductHandler(@PathVariable String productId) throws ProductException{
 		
 		System.out.println("dlete product controller .... ");
 		String msg=productService.deleteProduct(productId);
@@ -68,7 +75,7 @@ public class AdminProductController {
 	
 	
 	@PutMapping("/{productId}/update")
-	public ResponseEntity<Product> updateProductHandler(@RequestBody Product req,@PathVariable Long productId) throws ProductException{
+	public ResponseEntity<Product> updateProductHandler(@RequestBody Product req,@PathVariable String productId) throws ProductException{
 		
 		Product updatedProduct=productService.updateProduct(productId, req);
 		

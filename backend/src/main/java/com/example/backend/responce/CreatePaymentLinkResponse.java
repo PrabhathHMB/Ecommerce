@@ -1,4 +1,4 @@
-package com.example.backend.response;
+package com.example.backend.responce;
 
 public class CreatePaymentLinkResponse {
 

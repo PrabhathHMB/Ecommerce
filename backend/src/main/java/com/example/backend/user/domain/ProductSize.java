@@ -2,12 +2,10 @@ package com.example.backend.user.domain;
 
 public enum ProductSize {
 
-	 	XS,
+	XS,
 	    S,
 	    M,
 	    L,
 	    XL,
-	    XXL,
-	    XXXL,
-	    XXXXL
+	    XXL,    
 }

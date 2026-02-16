@@ -1,13 +1,15 @@
-package com.example.backend.response;
+package com.example.backend.responce;
 
 public class AuthResponse {
 
 	private String jwt;
 
 	private boolean status;
+	
+	private String message;
 
 	public AuthResponse() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public AuthResponse(String jwt, boolean status) {
@@ -30,6 +32,14 @@ public class AuthResponse {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }

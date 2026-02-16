@@ -1,12 +1,13 @@
 package com.example.backend.service;
 
-import com.example.backend.modal.User;
-import com.example.backend.repository.UserRepository;
-import com.example.backend.user.domain.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import com.example.backend.modal.User;
+import com.example.backend.repository.UserRepository;
+import com.example.backend.user.domain.UserRole;
 
 @Component
 public class DataInitializationComponent implements CommandLineRunner {
@@ -31,14 +32,14 @@ public class DataInitializationComponent implements CommandLineRunner {
     }
 
     private void initializeAdminUser() {
-        String adminUsername = "codewithzosh@gmail.com";
+        String adminUsername = "bhanukaprabhath0@gmail.com";
 
         if (userRepository.findByEmail(adminUsername)==null) {
             User adminUser = new User();
 
-            adminUser.setPassword(passwordEncoder.encode("codewithzosh"));
-            adminUser.setFirstName("zosh");
-            adminUser.setLastName("code");
+            adminUser.setPassword(passwordEncoder.encode("2001"));
+            adminUser.setFirstName("bhanuka");
+            adminUser.setLastName("prabhath");
             adminUser.setEmail(adminUsername);
             adminUser.setRole(UserRole.ROLE_ADMIN.toString());
 

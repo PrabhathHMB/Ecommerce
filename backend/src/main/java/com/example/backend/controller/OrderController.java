@@ -36,7 +36,7 @@ public class OrderController {
 	@PostMapping("/")
 	public ResponseEntity<Order> createOrderHandler(
 			@RequestBody Address spippingAddress,
-			@RequestHeader("Authorization")String jwt) throws UserException{
+			@RequestHeader("Authorization")String jwt) throws UserException, OrderException{
 		
 		User user=userService.findUserProfileByJwt(jwt);
 		Order order =orderService.createOrder(user, spippingAddress);
@@ -55,12 +55,46 @@ public class OrderController {
 	}
 	
 	@GetMapping("/{orderId}")
-	public ResponseEntity< Order> findOrderHandler(@PathVariable Long orderId, @RequestHeader("Authorization") 
+	public ResponseEntity< Order> findOrderHandler(@PathVariable String orderId, @RequestHeader("Authorization") 
 	String jwt) throws OrderException, UserException{
 		
 		User user=userService.findUserProfileByJwt(jwt);
 		Order orders=orderService.findOrderById(orderId);
 		return new ResponseEntity<>(orders,HttpStatus.ACCEPTED);
+	}
+
+	@PutMapping("/{orderId}/cancel")
+	public ResponseEntity<Order> cancelOrderHandler(@PathVariable String orderId, 
+			@RequestBody(required = false) String reason,
+			@RequestHeader("Authorization") String jwt) throws OrderException, UserException {
+		
+		User user = userService.findUserProfileByJwt(jwt);
+		Order order = orderService.findOrderById(orderId);
+		
+		// Ensure user owns the order
+		if (!order.getUser().getId().equals(user.getId())) {
+			throw new UserException("You can't cancel another user's order");
+		}
+		
+		Order updatedOrder = orderService.cancledOrder(orderId, reason);
+		return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+	}
+
+	@PutMapping("/{orderId}/return")
+	public ResponseEntity<Order> returnOrderHandler(@PathVariable String orderId,
+			@RequestBody String reason,
+			@RequestHeader("Authorization") String jwt) throws OrderException, UserException {
+		
+		User user = userService.findUserProfileByJwt(jwt);
+		Order order = orderService.findOrderById(orderId);
+		
+		// Ensure user owns the order
+		if (!order.getUser().getId().equals(user.getId())) {
+			throw new UserException("You can't return another user's order");
+		}
+		
+		Order updatedOrder = orderService.returnOrder(orderId, reason);
+		return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
 	}
 
 }

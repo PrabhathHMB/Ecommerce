@@ -1,17 +1,12 @@
 package com.example.backend.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.example.backend.modal.Cart;
 import com.example.backend.modal.CartItem;
-import com.example.backend.modal.Product;
 
-public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+public interface CartItemRepository extends MongoRepository<CartItem, String> {
 
-	@Query("SELECT ci From CartItem ci Where ci.cart=:cart And ci.product=:product And ci.size=:size And ci.userId=:userId")
-	public CartItem isCartItemExist(@Param("cart") Cart cart, @Param("product") Product product,
-			@Param("size") String size, @Param("userId") Long userId);
-
+	public CartItem findByCart_IdAndProduct_IdAndSizeAndUserIdAndColor(String cartId, String productId, String size, String userId, String color);
+	
+	public java.util.Set<CartItem> findByCart_Id(String cartId);
 }

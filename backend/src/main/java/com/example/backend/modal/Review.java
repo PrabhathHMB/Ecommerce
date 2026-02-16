@@ -4,19 +4,15 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.annotation.Generated;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Document(collection = "reviews")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,18 +20,15 @@ import lombok.Setter;
 public class Review {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 	
 	private String review;
 	
-	@ManyToOne
-	@JoinColumn(name="product_id")
+	@DBRef
 	@JsonIgnore
 	private Product product;
 
-	@ManyToOne
-	@JoinColumn(name="user_id")
+	@DBRef
 	private User user;
 	
 	private LocalDateTime createdAt;

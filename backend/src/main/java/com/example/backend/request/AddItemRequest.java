@@ -2,8 +2,9 @@ package com.example.backend.request;
 
 public class AddItemRequest {
 
-	private Long productId;
+	private String productId;
 	private String size;
+	private String color;
 	private int quantity;
 	private Integer price;
 
@@ -11,11 +12,11 @@ public class AddItemRequest {
 
 	}
 
-	public Long getProductId() {
+	public String getProductId() {
 		return productId;
 	}
 
-	public void setProductId(Long productId) {
+	public void setProductId(String productId) {
 		this.productId = productId;
 	}
 
@@ -25,6 +26,14 @@ public class AddItemRequest {
 
 	public void setSize(String size) {
 		this.size = size;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public int getQuantity() {

@@ -1,16 +1,15 @@
 package com.example.backend.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import java.util.List;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.example.backend.modal.Category;
 
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends MongoRepository<Category, String> {
 
-	public Category findByName(String name);
+	public List<Category> findByName(String name);
 
-	@Query("Select c from Category c where c.name=:name AND c.parentCategory.name=:parentCategoryName")
-	public Category findByNameAndParant(@Param("name") String name,
-			@Param("parentCategoryName") String parentCategoryName);
+	public List<Category> findByNameAndParentCategory(String name, Category parentCategory);
 }

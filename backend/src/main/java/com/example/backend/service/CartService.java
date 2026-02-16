@@ -10,8 +10,10 @@ public interface CartService {
 	
 	public Cart createCart(User user);
 	
-	public CartItem addCartItem(Long userId,AddItemRequest req) throws ProductException;
+	public CartItem addCartItem(String userId,AddItemRequest req) throws ProductException;
 	
-	public Cart findUserCart(Long userId);
+	public Cart findUserCart(String userId);
+	
+	public void clearCart(String userId);
 
 }

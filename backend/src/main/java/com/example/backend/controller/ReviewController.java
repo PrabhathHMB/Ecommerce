@@ -30,7 +30,7 @@ public class ReviewController {
 	public ReviewController(ReviewService reviewService,UserService userService) {
 		this.reviewService=reviewService;
 		this.userService=userService;
-		// TODO Auto-generated constructor stub
+		
 	}
 	@PostMapping("/create")
 	public ResponseEntity<Review> createReviewHandler(@RequestBody ReviewRequest req,@RequestHeader("Authorization") String jwt) throws UserException, ProductException{
@@ -42,7 +42,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/product/{productId}")
-	public ResponseEntity<List<Review>> getProductsReviewHandler(@PathVariable Long productId){
+	public ResponseEntity<List<Review>> getProductsReviewHandler(@PathVariable String productId){
 		List<Review>reviews=reviewService.getAllReview(productId);
 		return new ResponseEntity<List<Review>>(reviews,HttpStatus.OK);
 	}

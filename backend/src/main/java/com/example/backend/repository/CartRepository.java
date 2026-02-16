@@ -1,13 +1,11 @@
 package com.example.backend.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.example.backend.modal.Cart;
 
-public interface CartRepository extends JpaRepository<Cart, Long> {
+public interface CartRepository extends MongoRepository<Cart, String> {
 
-	@Query("SELECT c From Cart c where c.user.id=:userId")
-	public Cart findByUserId(@Param("userId") Long userId);
+	public Cart findByUser_Id(String userId);
 }

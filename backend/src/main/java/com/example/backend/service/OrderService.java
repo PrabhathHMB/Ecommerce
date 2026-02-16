@@ -9,24 +9,28 @@ import com.example.backend.modal.User;
 
 public interface OrderService {
 	
-	public Order createOrder(User user, Address shippingAdress);
+	public Order createOrder(User user, Address shippingAdress) throws OrderException;
 	
-	public Order findOrderById(Long orderId) throws OrderException;
+	public Order findOrderById(String orderId) throws OrderException;
 	
-	public List<Order> usersOrderHistory(Long userId);
+	public List<Order> usersOrderHistory(String userId);
 	
-	public Order placedOrder(Long orderId) throws OrderException;
+	public Order placedOrder(String orderId) throws OrderException;
 	
-	public Order confirmedOrder(Long orderId)throws OrderException;
+	public Order confirmedOrder(String orderId)throws OrderException;
 	
-	public Order shippedOrder(Long orderId) throws OrderException;
+	public Order shippedOrder(String orderId) throws OrderException;
 	
-	public Order deliveredOrder(Long orderId) throws OrderException;
+	public Order deliveredOrder(String orderId) throws OrderException;
 	
-	public Order cancledOrder(Long orderId) throws OrderException;
+	public Order cancledOrder(String orderId) throws OrderException;
+
+	public Order cancledOrder(String orderId, String reason) throws OrderException;
+
+	public Order returnOrder(String orderId, String reason) throws OrderException;
 	
 	public List<Order>getAllOrders();
 	
-	public void deleteOrder(Long orderId) throws OrderException;
+	public void deleteOrder(String orderId) throws OrderException;
 	
 }
