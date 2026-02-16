@@ -132,7 +132,7 @@ const ReturnsPage: React.FC = () => {
                     <div className="damage-content">
                         <p>
                             If you receive a damaged or defective item, please contact us immediately at
-                            <strong> support@beautyfashion.lk</strong> or call <strong>+94 11 234 5678</strong>.
+                            <strong> support@beautyfashion.lk</strong> or call <strong>+94 786465739</strong>.
                         </p>
                         <ul>
                             <li>Take clear photos of the defect or damage</li>

@@ -944,19 +944,25 @@ body {
 .error-page {
     text-align: center;
     padding: 80px 20px;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .empty-cart h2,
 .empty-orders h2,
 .error-page h2 {
     font-size: 2rem;
-    color: #333;
+    color: #1e40af;
     margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
 }
 
 .empty-cart p,
 .empty-orders p {
-    color: #666;
+    color: #1e40af;
     font-size: 1.1rem;
     margin-bottom: 30px;
 }
@@ -1511,16 +1517,40 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    background: white;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .social-icon:hover {
-    background: white;
-    color: #34495e;
-    transform: translateY(-3px);
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Individual social icon styling */
+.social-icon-facebook:hover {
+    background: #1877F2;
+}
+
+.social-icon-facebook:hover svg {
+    fill: white !important;
+}
+
+.social-icon-instagram:hover {
+    background: linear-gradient(135deg, #FD5949 0%, #D6249F 50%, #285AEB 100%);
+}
+
+.social-icon-instagram:hover path {
+    fill: white !important;
+}
+
+.social-icon-whatsapp:hover {
+    background: #25D366;
+}
+
+.social-icon-whatsapp:hover svg {
+    fill: white !important;
 }
 
 /* Page Backgrounds */

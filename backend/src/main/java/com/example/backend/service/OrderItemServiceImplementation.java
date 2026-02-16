@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.example.backend.service;
 
 import org.springframework.stereotype.Service;
@@ -19,3 +20,26 @@ public class OrderItemServiceImplementation implements OrderItemService {
 	}
 
 }
+=======
+package com.example.backend.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.backend.modal.OrderItem;
+import com.example.backend.repository.OrderItemRepository;
+
+@Service
+public class OrderItemServiceImplementation implements OrderItemService {
+
+	private OrderItemRepository orderItemRepository;
+	public OrderItemServiceImplementation(OrderItemRepository orderItemRepository) {
+		this.orderItemRepository=orderItemRepository;
+	}
+	@Override
+	public OrderItem createOrderItem(OrderItem orderItem) {
+		
+		return orderItemRepository.save(orderItem);
+	}
+
+}
+>>>>>>> f3b6a345980233ed739f0533bd19c64770bd705a

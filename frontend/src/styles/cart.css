@@ -1,17 +1,44 @@
 /* Cart Page Styles */
 .cart-page {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 25%, #e0e7ff 50%, #f0f9ff 75%, #fce7f3 100%);
+    background-attachment: fixed;
+    position: relative;
+}
+
+.cart-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(147, 197, 253, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(196, 181, 253, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(191, 219, 254, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cart-page>* {
+    position: relative;
+    z-index: 1;
 }
 
 .cart-page h1 {
     font-size: 2.5rem;
     margin-bottom: 30px;
-    color: #333;
+    color: #1e40af;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {
+    .cart-page {
+        padding: 20px 15px;
+    }
+
     .cart-page h1 {
         font-size: 1.8rem;
     }
@@ -21,24 +48,27 @@
     display: grid;
     grid-template-columns: 1fr 380px;
     gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .cart-items-section {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(10px);
 }
 
 .cart-header {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     padding: 15px 20px;
-    background: #f8f9fa;
+    background: linear-gradient(135deg, rgba(147, 197, 253, 0.2) 0%, rgba(196, 181, 253, 0.2) 100%);
     border-radius: 8px;
     margin-bottom: 20px;
     font-weight: 700;
-    color: #555;
+    color: #1e40af;
 }
 
 @media (max-width: 768px) {
@@ -123,19 +153,20 @@
 
 /* Cart Summary */
 .cart-summary {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(10px);
     height: fit-content;
     position: sticky;
-    top: 90px;
+    top: 200px;
 }
 
 .cart-summary h3 {
     font-size: 1.5rem;
     margin-bottom: 25px;
-    color: #333;
+    color: #1e40af;
 }
 
 .summary-row {

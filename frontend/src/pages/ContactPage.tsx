@@ -43,7 +43,7 @@ const ContactPage: React.FC = () => {
                             <span className="info-icon">📍</span>
                             <div>
                                 <h3>Our Location</h3>
-                                <p>123 Galle Road,<br />Colombo 03,<br />Sri Lanka</p>
+                                <p>132/h, Kandy Road,<br />Gampaha<br />Sri Lanka</p>
                             </div>
                         </div>
 
@@ -51,7 +51,7 @@ const ContactPage: React.FC = () => {
                             <span className="info-icon">📞</span>
                             <div>
                                 <h3>Phone</h3>
-                                <p>+94 11 234 5678</p>
+                                <p>+94 78 646 5739</p>
                                 <p>+94 77 123 4567</p>
                             </div>
                         </div>
