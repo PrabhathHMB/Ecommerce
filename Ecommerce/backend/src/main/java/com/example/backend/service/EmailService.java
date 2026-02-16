@@ -28,6 +28,7 @@ public class EmailService {
         sendSimpleMessage(to, subject, text);
     }
 
+    @Async
     public void sendOrderConfirmationEmail(String to, com.example.backend.modal.Order order) {
         String subject = "Order Confirmation - Order #" + order.getId();
         StringBuilder text = new StringBuilder();

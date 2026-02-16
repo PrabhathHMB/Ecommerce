@@ -3,21 +3,16 @@ import { Product, ProductPage, ProductFilterParams, CreateProductRequest } from 
 
 export const productApi = {
     getAllProducts: async (params: ProductFilterParams): Promise<ProductPage> => {
-        // Backend requires all parameters, AND filters strictly if list is present.
-        // Workaround: Send ALL possible values if filter is empty.
-        const ALL_COLORS = ['BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE', 'YELLOW', 'PINK', 'PURPLE', 'ORANGE', 'GREY', 'BROWN', 'GOLD', 'SILVER'];
-        const ALL_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-
         const queryParams = {
             category: params.category || '',
             parentCategory: params.parentCategory || '',
-            color: params.color && params.color.length > 0 ? params.color : ALL_COLORS,
-            size: params.size && params.size.length > 0 ? params.size : ALL_SIZES,
-            minPrice: params.minPrice || 0,
-            maxPrice: params.maxPrice || 10000000,
-            minDiscount: params.minDiscount || 0,
+            color: params.color,
+            size: params.size,
+            minPrice: params.minPrice,
+            maxPrice: params.maxPrice,
+            minDiscount: params.minDiscount,
             sort: params.sort || 'price_low',
-            stock: params.stock || '',
+            stock: params.stock,
             pageNumber: params.pageNumber || 0,
             pageSize: params.pageSize || 10
         };
@@ -56,12 +51,12 @@ export const productApi = {
     },
 
     getRecentProducts: async (): Promise<Product[]> => {
-        const response = await api.get('/api/products?color=&size=&minPrice=0&maxPrice=10000000&minDiscount=0&sort=price_high&stock=&pageNumber=0&pageSize=10&category=');
+        const response = await api.get('/api/products?sort=price_high&pageNumber=0&pageSize=10');
         return response.data.content;
     },
 
     getProductsByCategory: async (category: string): Promise<Product[]> => {
-        const response = await api.get(`/api/products?color=&size=&minPrice=0&maxPrice=10000000&minDiscount=0&sort=price_high&stock=&pageNumber=0&pageSize=10&category=${category}`);
+        const response = await api.get(`/api/products?sort=price_high&pageNumber=0&pageSize=10&category=${category}`);
         return response.data.content;
     }
 };

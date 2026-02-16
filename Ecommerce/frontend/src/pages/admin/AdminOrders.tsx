@@ -3,9 +3,8 @@ import { orderApi } from '../../api/orderApi';
 import { Order } from '../../types/order.types';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-import { formatPrice } from '../../utils/currency';
 import { useToast } from '../../context/ToastContext';
-import { Trash2, Truck, CheckCircle, XCircle, Package } from 'lucide-react';
+import AdminOrderTable from '../../components/admin/AdminOrderTable';
 
 const AdminOrders: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -104,17 +103,7 @@ const AdminOrders: React.FC = () => {
         }
     };
 
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'PLACED': return '#28a745'; // Green
-            case 'CONFIRMED': return '#007bff'; // Blue
-            case 'SHIPPED': return '#6f42c1'; // Purple
-            case 'DELIVERED': return '#10b981'; // Teal
-            case 'CANCELLED': return '#ef4444'; // Red
-            case 'PENDING': return '#f59e0b'; // Amber
-            default: return '#6b7280'; // Gray
-        }
-    };
+
 
     return (
         <div className="admin-layout">
@@ -129,116 +118,15 @@ const AdminOrders: React.FC = () => {
                     <LoadingSpinner />
                 ) : (
                     <div className="admin-card">
-                        <div className="admin-table-container">
-                            <table className="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Date</th>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                        <th>Payment</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {orders.map((order) => (
-                                        <tr key={order.id}>
-                                            <td>
-                                                <span style={{ fontFamily: 'monospace', color: '#6b7280' }}>
-                                                    #{order.id.substring(0, 8)}...
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div style={{ fontWeight: 500 }}>
-                                                    {order.user ? `${order.user.firstName} ${order.user.lastName}` : 'Unknown User'}
-                                                </div>
-                                            </td>
-                                            <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                                            <td>{order.totalItem} items</td>
-                                            <td>{formatPrice(order.totalPrice)}</td>
-                                            <td>
-                                                <span
-                                                    className="status-badge"
-                                                    style={{ backgroundColor: getStatusColor(order.orderStatus) }}
-                                                >
-                                                    {order.orderStatus}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span className={`status-badge`} style={{ backgroundColor: order.paymentDetails?.status === 'COMPLETED' ? '#10b981' : '#f59e0b' }}>
-                                                    {order.paymentDetails?.status || 'Pending'}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                                    {order.orderStatus === 'PENDING' && (
-                                                        <button
-                                                            onClick={() => handlePlaceOrder(order.id)}
-                                                            className="btn-primary"
-                                                            title="Mark Placed"
-                                                            style={{ padding: '0.4rem', backgroundColor: '#28a745' }}
-                                                        >
-                                                            <CheckCircle size={16} /> Mark Placed
-                                                        </button>
-                                                    )}
-                                                    {order.orderStatus === 'PLACED' && (
-                                                        <button
-                                                            onClick={() => handleConfirmOrder(order.id)}
-                                                            className="btn-primary"
-                                                            title="Confirm Order"
-                                                            style={{ padding: '0.4rem' }}
-                                                        >
-                                                            <CheckCircle size={16} /> Confirm
-                                                        </button>
-                                                    )}
-                                                    {order.orderStatus === 'CONFIRMED' && (
-                                                        <button
-                                                            onClick={() => handleShipOrder(order.id)}
-                                                            className="btn-primary"
-                                                            title="Ship Order"
-                                                            style={{ padding: '0.4rem', backgroundColor: '#6f42c1' }}
-                                                        >
-                                                            <Truck size={16} /> Ship
-                                                        </button>
-                                                    )}
-                                                    {order.orderStatus === 'SHIPPED' && (
-                                                        <button
-                                                            onClick={() => handleDeliverOrder(order.id)}
-                                                            className="btn-primary"
-                                                            title="Deliver Order"
-                                                            style={{ padding: '0.4rem', backgroundColor: '#10b981' }}
-                                                        >
-                                                            <Package size={16} /> Deliver
-                                                        </button>
-                                                    )}
-                                                    {order.orderStatus !== 'CANCELLED' && order.orderStatus !== 'DELIVERED' && (
-                                                        <button
-                                                            onClick={() => handleCancelOrder(order.id)}
-                                                            className="btn-secondary"
-                                                            title="Cancel Order"
-                                                            style={{ padding: '0.4rem', color: '#ef4444', borderColor: '#fee2e2', background: '#fef2f2' }}
-                                                        >
-                                                            <XCircle size={16} /> Cancel
-                                                        </button>
-                                                    )}
-                                                    <button
-                                                        onClick={() => handleDeleteOrder(order.id)}
-                                                        className="btn-danger"
-                                                        title="Delete Order"
-                                                        style={{ padding: '0.4rem' }}
-                                                    >
-                                                        <Trash2 size={16} />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                        <AdminOrderTable
+                            orders={orders}
+                            onPlace={handlePlaceOrder}
+                            onConfirm={handleConfirmOrder}
+                            onShip={handleShipOrder}
+                            onDeliver={handleDeliverOrder}
+                            onCancel={handleCancelOrder}
+                            onDelete={handleDeleteOrder}
+                        />
                     </div>
                 )}
             </div>

@@ -11,6 +11,7 @@
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/AuthController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/CartController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/CartItemController.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/CategoryController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/HomeController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/OrderController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/PaymentController.java
@@ -18,6 +19,7 @@
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/ReviewController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/UserController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/UserProductController.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/WishlistController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/exception/CartItemException.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/exception/ErrorDetails.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/exception/GlobleException.java
@@ -35,6 +37,7 @@
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/modal/Rating.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/modal/Review.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/modal/User.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/modal/Wishlist.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/modal/size.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/repository/AddressRepository.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/repository/CartItemRepository.java
@@ -46,6 +49,7 @@
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/repository/RatingRepository.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/repository/ReviewRepository.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/repository/UserRepository.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/repository/WishlistRepository.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/request/AddItemRequest.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/request/CreateProductRequest.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/request/DeleteProductRequest.java
@@ -81,6 +85,8 @@
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/service/ReviewServiceImplementation.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/service/UserService.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/service/UserServiceImplementation.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/service/WishlistService.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/service/WishlistServiceImplementation.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/user/domain/OrderStatus.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/user/domain/PaymentMethod.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/user/domain/PaymentStatus.java

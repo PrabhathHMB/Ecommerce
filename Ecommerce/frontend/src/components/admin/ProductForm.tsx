@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CreateProductRequest, Product } from '../../types/product.types';
 import { Size } from '../../types/common.types';
 import CustomSelect from '../common/CustomSelect';
+import { resolveImage } from '../../utils/image';
 import './ProductForm.css';
 
 interface ProductFormProps {
@@ -24,9 +25,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
         topLavelCategory: '',
         secondLavelCategory: '',
         thirdLavelCategory: '',
+        sizeChart: product?.sizeChart || '',
     });
 
     const [sizes, setSizes] = useState<Size[]>(product?.sizes || []);
+    const [imagesList, setImagesList] = useState<string[]>(product?.images || []);
+    const [colorsList, setColorsList] = useState<string[]>(product?.colors || []);
     const [sizeInput, setSizeInput] = useState({ name: '', quantity: 0 });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -86,9 +90,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
         }
 
         if (product) {
-            onSubmit({ ...product, ...formData, sizes } as Product);
+            onSubmit({ ...product, ...formData, sizes, images: imagesList, colors: colorsList } as Product);
         } else {
-            onSubmit({ ...formData, size: sizes } as CreateProductRequest);
+            onSubmit({ ...formData, size: sizes, images: imagesList, colors: colorsList } as CreateProductRequest);
         }
     };
 
@@ -174,6 +178,55 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
                                 allowCustom={true}
                             />
                         </div>
+
+                        {/* Multiple Colors Support */}
+                        <div className="form-group span-3">
+                            <label>Additional Colors</label>
+                            <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                                <input
+                                    type="text"
+                                    placeholder="Add another color (e.g. Navy Blue)"
+                                    id="new-color-input"
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            const input = e.currentTarget;
+                                            if (input.value) {
+                                                setColorsList([...colorsList, input.value]);
+                                                input.value = '';
+                                            }
+                                        }
+                                    }}
+                                />
+                                <button type="button" className="btn-secondary" onClick={(e) => {
+                                    const input = document.getElementById('new-color-input') as HTMLInputElement;
+                                    if (input && input.value) {
+                                        setColorsList([...colorsList, input.value]);
+                                        input.value = '';
+                                    }
+                                }}>Add</button>
+                            </div>
+
+                            <div className="colors-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {colorsList.map((col, idx) => (
+                                    <div key={idx} style={{
+                                        display: 'flex', alignItems: 'center', gap: '5px',
+                                        padding: '5px 10px', background: '#f0f0f0', borderRadius: '20px', fontSize: '0.9rem'
+                                    }}>
+                                        <span>{col}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => setColorsList(colorsList.filter((_, i) => i !== idx))}
+                                            style={{
+                                                background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '1.2rem', lineHeight: 0.5
+                                            }}
+                                        >
+                                            &times;
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -182,20 +235,23 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
                     <h4>Media</h4>
                     <div className="image-upload-area">
                         <div className="form-group" style={{ flex: 1 }}>
-                            <label>Image URL <span className="required">*</span></label>
+                            <label>Main Image URL <span className="required">*</span></label>
                             <input
                                 type="text"
                                 name="imageUrl"
                                 value={formData.imageUrl}
                                 onChange={handleChange}
                                 required
-                                placeholder="https://example.com/image.jpg"
+                                placeholder="https://example.com/image.jpg OR /assets/image.jpg"
                             />
+                            <small style={{ color: '#666', display: 'block', marginTop: '5px' }}>
+                                For local images, place them in <code>public/assets</code> and use <code>/assets/filename.jpg</code>
+                            </small>
                         </div>
                         <div className="image-preview-card">
                             {formData.imageUrl ? (
                                 <img
-                                    src={formData.imageUrl}
+                                    src={resolveImage(formData.imageUrl)}
                                     alt="Preview"
                                     onError={(e) => (e.currentTarget.style.display = 'none')}
                                 />
@@ -204,6 +260,57 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
                                     No Image
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Multiple Images Support */}
+                    <div className="additional-images-section" style={{ marginTop: '20px' }}>
+                        <label>Additional Images</label>
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                            <input
+                                type="text"
+                                placeholder="Add image URL or /assets/..."
+                                id="new-image-input" // Using ID for simplicity, state managed via button click
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        const input = e.currentTarget;
+                                        if (input.value) {
+                                            setImagesList([...imagesList, input.value]);
+                                            input.value = '';
+                                        }
+                                    }
+                                }}
+                            />
+                            <button type="button" className="btn-secondary" onClick={(e) => {
+                                const input = document.getElementById('new-image-input') as HTMLInputElement;
+                                if (input && input.value) {
+                                    setImagesList([...imagesList, input.value]);
+                                    input.value = '';
+                                }
+                            }}>Add</button>
+                        </div>
+
+                        <div className="images-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            {imagesList.map((img, idx) => (
+                                <div key={idx} style={{ position: 'relative', width: '100px', height: '100px', border: '1px solid #ddd' }}>
+                                    <img
+                                        src={resolveImage(img)}
+                                        alt={`Extra ${idx}`}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setImagesList(imagesList.filter((_, i) => i !== idx))}
+                                        style={{
+                                            position: 'absolute', top: 0, right: 0, background: 'red', color: 'white',
+                                            border: 'none', width: '20px', height: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                        }}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -291,6 +398,43 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
                         </div>
                     </div>
                 )}
+
+                {/* Size Chart Section - Only for Clothing */}
+                {(formData.secondLavelCategory?.toLowerCase() === 'clothing' ||
+                    product?.category?.parentCategory?.name?.toLowerCase() === 'clothing' ||
+                    product?.category?.parentCategory?.parentCategory?.name?.toLowerCase() === 'clothing') && (
+                        <div className="form-section">
+                            <h4>Size Chart</h4>
+                            <div className="image-upload-area">
+                                <div className="form-group" style={{ flex: 1 }}>
+                                    <label>Size Chart URL</label>
+                                    <input
+                                        type="text"
+                                        name="sizeChart"
+                                        value={formData.sizeChart || ''}
+                                        onChange={handleChange}
+                                        placeholder="https://example.com/size-chart.jpg OR /assets/chart.jpg"
+                                    />
+                                    <small style={{ color: '#666', display: 'block', marginTop: '5px' }}>
+                                        For local charts, place them in <code>public/assets</code> and use <code>/assets/filename.jpg</code> (support jpg, png, webp, etc.)
+                                    </small>
+                                </div>
+                                <div className="image-preview-card">
+                                    {formData.sizeChart ? (
+                                        <img
+                                            src={resolveImage(formData.sizeChart)}
+                                            alt="Size Chart Preview"
+                                            onError={(e) => (e.currentTarget.style.display = 'none')}
+                                        />
+                                    ) : (
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#f0f0f0', color: '#aaa' }}>
+                                            No Chart
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                 <div className="form-section">
                     <h4>Available Sizes</h4>
