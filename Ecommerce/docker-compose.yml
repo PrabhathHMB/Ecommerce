@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=${MONGODB_URI:-mongodb://bhanuka:20011103Bb%40@ac-ifol5hb-shard-00-00.xv5yq0q.mongodb.net:27017,ac-ifol5hb-shard-00-01.xv5yq0q.mongodb.net:27017,ac-ifol5hb-shard-00-02.xv5yq0q.mongodb.net:27017/projectdb?tls=true&replicaSet=atlas-qud21k-shard-0&authSource=admin&retryWrites=true&w=majority}
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    container_name: frontend-service
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
