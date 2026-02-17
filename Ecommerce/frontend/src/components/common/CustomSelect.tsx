@@ -28,7 +28,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     const inputRef = useRef<HTMLInputElement>(null);
 
     const selectedOption = options.find(opt => opt.value === value);
-    const displayValue = selectedOption ? selectedOption.label : value;
+
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
