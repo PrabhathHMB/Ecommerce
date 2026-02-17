@@ -198,7 +198,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
                                         }
                                     }}
                                 />
-                                <button type="button" className="btn-secondary" onClick={(e) => {
+                                <button type="button" className="btn-secondary" onClick={() => {
                                     const input = document.getElementById('new-color-input') as HTMLInputElement;
                                     if (input && input.value) {
                                         setColorsList([...colorsList, input.value]);
@@ -282,7 +282,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
                                     }
                                 }}
                             />
-                            <button type="button" className="btn-secondary" onClick={(e) => {
+                            <button type="button" className="btn-secondary" onClick={() => {
                                 const input = document.getElementById('new-image-input') as HTMLInputElement;
                                 if (input && input.value) {
                                     setImagesList([...imagesList, input.value]);
