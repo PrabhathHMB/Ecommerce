@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Order } from '../../types/order.types';
 import { formatPrice } from '../../utils/currency';
-import { Trash2, XCircle } from 'lucide-react';
+import { Trash2, Truck, CheckCircle, XCircle, Package } from 'lucide-react';
 import './AdminTable.css';
 
 interface AdminOrderTableProps {
@@ -127,46 +127,26 @@ const AdminOrderTable: React.FC<AdminOrderTableProps> = ({
                             <td>
                                 <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                                     {order.orderStatus === 'PENDING' && (
-                                        <button
-                                            onClick={() => onPlace(order.id)}
-                                            className="action-btn"
-                                            style={{ backgroundColor: '#dcfce7', color: '#166534', padding: '4px 8px', width: 'auto', borderRadius: '4px' }}
-                                            title="Mark Placed"
-                                        >
-                                            <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>PLACE</span>
+                                        <button onClick={() => onPlace(order.id)} className="action-btn" style={{ backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', gap: '4px' }} title="Mark Placed">
+                                            <CheckCircle size={14} /> Mark Placed
                                         </button>
                                     )}
                                     {order.orderStatus === 'PLACED' && (
-                                        <button
-                                            onClick={() => onConfirm(order.id)}
-                                            className="action-btn"
-                                            style={{ backgroundColor: '#dbeafe', color: '#1e40af', padding: '4px 8px', width: 'auto', borderRadius: '4px' }}
-                                            title="Confirm"
-                                        >
-                                            <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>CONFIRM</span>
+                                        <button onClick={() => onConfirm(order.id)} className="action-btn" style={{ backgroundColor: '#dbeafe', color: '#1e40af', display: 'flex', alignItems: 'center', gap: '4px' }} title="Confirm">
+                                            <CheckCircle size={14} /> Confirm
                                         </button>
                                     )}
                                     {order.orderStatus === 'CONFIRMED' && (
-                                        <button
-                                            onClick={() => onShip(order.id)}
-                                            className="action-btn"
-                                            style={{ backgroundColor: '#f3e8ff', color: '#6b21a8', padding: '4px 8px', width: 'auto', borderRadius: '4px' }}
-                                            title="Ship"
-                                        >
-                                            <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>SHIP</span>
+                                        <button onClick={() => onShip(order.id)} className="action-btn" style={{ backgroundColor: '#f3e8ff', color: '#6b21a8', display: 'flex', alignItems: 'center', gap: '4px' }} title="Ship">
+                                            <Truck size={14} /> Ship
                                         </button>
                                     )}
                                     {order.orderStatus === 'SHIPPED' && (
-                                        <button
-                                            onClick={() => onDeliver(order.id)}
-                                            className="action-btn"
-                                            style={{ backgroundColor: '#d1fae5', color: '#065f46', padding: '4px 8px', width: 'auto', borderRadius: '4px' }}
-                                            title="Deliver"
-                                        >
-                                            <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>DELIVER</span>
+                                        <button onClick={() => onDeliver(order.id)} className="action-btn" style={{ backgroundColor: '#d1fae5', color: '#065f46', display: 'flex', alignItems: 'center', gap: '4px' }} title="Deliver">
+                                            <Package size={14} /> Deliver
                                         </button>
                                     )}
-                                    {order.orderStatus !== 'CANCELLED' && order.orderStatus !== 'DELIVERED' && order.orderStatus !== 'RETURNED' && (
+                                    {order.orderStatus !== 'CANCELLED' && order.orderStatus !== 'DELIVERED' && (
                                         <button onClick={() => onCancel(order.id)} className="action-btn" style={{ backgroundColor: '#fee2e2', color: '#991b1b' }} title="Cancel">
                                             <XCircle size={14} />
                                         </button>
@@ -181,38 +161,36 @@ const AdminOrderTable: React.FC<AdminOrderTableProps> = ({
                 </tbody>
             </table>
 
-            {
-                totalPages > 1 && (
-                    <div className="pagination-container">
-                        <button
-                            className="page-btn"
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                        >
-                            &lt; Prev
-                        </button>
+            {totalPages > 1 && (
+                <div className="pagination-container">
+                    <button
+                        className="page-btn"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        &lt; Prev
+                    </button>
 
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                            <button
-                                key={page}
-                                className={`page-btn ${currentPage === page ? 'active' : ''}`}
-                                onClick={() => handlePageChange(page)}
-                            >
-                                Sheet {page}
-                            </button>
-                        ))}
-
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                         <button
-                            className="page-btn"
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
+                            key={page}
+                            className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                            onClick={() => handlePageChange(page)}
                         >
-                            Next &gt;
+                            Sheet {page}
                         </button>
-                    </div>
-                )
-            }
-        </div >
+                    ))}
+
+                    <button
+                        className="page-btn"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                    >
+                        Next &gt;
+                    </button>
+                </div>
+            )}
+        </div>
     );
 };
 

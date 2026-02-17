@@ -61,6 +61,22 @@ public class OrderServiceImplementation implements OrderService {
 		Cart cart=cartService.findUserCart(user.getId());
 		List<OrderItem> orderItems=new ArrayList<>();
 		
+		Order createdOrder=new Order();
+		createdOrder.setUser(user);
+		createdOrder.setShippingAddress(address);
+		createdOrder.setOrderDate(LocalDate.now());
+		createdOrder.setOrderStatus(OrderStatus.PENDING);
+		createdOrder.getPaymentDetails().setStatus(PaymentStatus.PENDING);
+		createdOrder.setCreatedAt(LocalDateTime.now());
+		createdOrder.setTotalPrice(cart.getTotalPrice());
+		createdOrder.setTotalDiscountedPrice(cart.getTotalDiscountedPrice());
+		createdOrder.setDiscount(cart.getDiscounte());
+		createdOrder.setTotalItem(cart.getTotalItem());
+		createdOrder.setDeliveryCharges(cart.getDeliveryCharges());
+		
+		// Save order first to get the ID
+		Order savedOrder=orderRepository.save(createdOrder);
+		
 		for(CartItem item: cart.getCartItems()) {
 			OrderItem orderItem=new OrderItem();
 			
@@ -68,6 +84,9 @@ public class OrderServiceImplementation implements OrderService {
 			orderItem.setProduct(item.getProduct());
 			orderItem.setQuantity(item.getQuantity());
 			orderItem.setSize(item.getSize());
+			orderItem.setUserId(item.getUserId());
+			orderItem.setDiscountedPrice(item.getDiscountedPrice());
+			orderItem.setOrder(savedOrder); // Set order reference immediately
 			
 			// Subtract quantity from product
 			Product product = item.getProduct();
@@ -98,37 +117,14 @@ public class OrderServiceImplementation implements OrderService {
 					productRepository.save(dbProduct);
 				}
 			}
-			orderItem.setUserId(item.getUserId());
-			orderItem.setDiscountedPrice(item.getDiscountedPrice());
 			
-			
+			// Save order item only once with order reference already set
 			OrderItem createdOrderItem=orderItemRepository.save(orderItem);
-			
 			orderItems.add(createdOrderItem);
 		}
 		
-		
-		Order createdOrder=new Order();
-		createdOrder.setUser(user);
-		createdOrder.setOrderItems(orderItems);
-		createdOrder.setTotalPrice(cart.getTotalPrice());
-		createdOrder.setTotalDiscountedPrice(cart.getTotalDiscountedPrice());
-		createdOrder.setDiscount(cart.getDiscounte());
-		createdOrder.setTotalItem(cart.getTotalItem());
-		createdOrder.setDeliveryCharges(cart.getDeliveryCharges());
-		
-		createdOrder.setShippingAddress(address);
-		createdOrder.setOrderDate(LocalDate.now());
-		createdOrder.setOrderStatus(OrderStatus.PENDING);
-		createdOrder.getPaymentDetails().setStatus(PaymentStatus.PENDING);
-		createdOrder.setCreatedAt(LocalDateTime.now());
-		
-		Order savedOrder=orderRepository.save(createdOrder);
-		
-		for(OrderItem item:orderItems) {
-			item.setOrder(savedOrder);
-			orderItemRepository.save(item);
-		}
+		// Update the saved order with the order items list
+		savedOrder.setOrderItems(orderItems);	
 		
 		emailService.sendOrderConfirmationEmail(user.getEmail(), savedOrder);
 		

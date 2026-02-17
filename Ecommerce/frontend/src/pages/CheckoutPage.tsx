@@ -70,118 +70,120 @@ const CheckoutPage: React.FC = () => {
                     <h2>Shipping Address</h2>
 
                     <form onSubmit={handleSubmit} className="checkout-form">
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>First Name *</label>
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    value={address.firstName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Last Name *</label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    value={address.lastName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Street Address *</label>
-                            <input
-                                type="text"
-                                name="streetAddress"
-                                value={address.streetAddress}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>City *</label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    value={address.city}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>State/Province *</label>
-                                <input
-                                    type="text"
-                                    name="state"
-                                    value={address.state}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Zip Code *</label>
-                                <input
-                                    type="text"
-                                    name="zipCode"
-                                    value={address.zipCode}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Mobile Number *</label>
-                                <input
-                                    type="tel"
-                                    name="mobile"
-                                    value={address.mobile}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="payment-method-section">
-                            <h3>Payment Method</h3>
-                            <div className="payment-options">
-                                <label className="payment-option">
+                        <fieldset disabled={loading} style={{ border: 'none', padding: 0, margin: 0 }}>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>First Name *</label>
                                     <input
-                                        type="radio"
-                                        name="paymentMethod"
-                                        value="PAYHERE"
-                                        checked={paymentMethod === 'PAYHERE'}
-                                        onChange={() => setPaymentMethod('PAYHERE')}
+                                        type="text"
+                                        name="firstName"
+                                        value={address.firstName}
+                                        onChange={handleChange}
+                                        required
                                     />
-                                    <span>Online Payment (PayHere)</span>
-                                </label>
-                                <label className="payment-option">
-                                    <input
-                                        type="radio"
-                                        name="paymentMethod"
-                                        value="COD"
-                                        checked={paymentMethod === 'COD'}
-                                        onChange={() => setPaymentMethod('COD')}
-                                    />
-                                    <span>Cash on Delivery</span>
-                                </label>
-                            </div>
-                        </div>
+                                </div>
 
-                        <button type="submit" className="btn-checkout" disabled={loading}>
-                            {loading ? 'Processing...' : 'Place Order'}
-                        </button>
+                                <div className="form-group">
+                                    <label>Last Name *</label>
+                                    <input
+                                        type="text"
+                                        name="lastName"
+                                        value={address.lastName}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Street Address *</label>
+                                <input
+                                    type="text"
+                                    name="streetAddress"
+                                    value={address.streetAddress}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>City *</label>
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        value={address.city}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>State/Province *</label>
+                                    <input
+                                        type="text"
+                                        name="state"
+                                        value={address.state}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Zip Code *</label>
+                                    <input
+                                        type="text"
+                                        name="zipCode"
+                                        value={address.zipCode}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Mobile Number *</label>
+                                    <input
+                                        type="tel"
+                                        name="mobile"
+                                        value={address.mobile}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="payment-method-section">
+                                <h3>Payment Method</h3>
+                                <div className="payment-options">
+                                    <label className="payment-option">
+                                        <input
+                                            type="radio"
+                                            name="paymentMethod"
+                                            value="PAYHERE"
+                                            checked={paymentMethod === 'PAYHERE'}
+                                            onChange={() => setPaymentMethod('PAYHERE')}
+                                        />
+                                        <span>Online Payment (PayHere)</span>
+                                    </label>
+                                    <label className="payment-option">
+                                        <input
+                                            type="radio"
+                                            name="paymentMethod"
+                                            value="COD"
+                                            checked={paymentMethod === 'COD'}
+                                            onChange={() => setPaymentMethod('COD')}
+                                        />
+                                        <span>Cash on Delivery</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" className="btn-checkout" disabled={loading}>
+                                {loading ? 'Processing...' : 'Place Order'}
+                            </button>
+                        </fieldset>
                     </form>
                 </div>
 

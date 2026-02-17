@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { orderApi } from '../api/orderApi';
+import { useCart } from '../hooks/useCart';
 
 const PaymentSuccessPage: React.FC = () => {
     const navigate = useNavigate();
+    const { refreshCart } = useCart();
     const [status, setStatus] = React.useState<'loading' | 'success' | 'error'>('loading');
 
     React.useEffect(() => {
@@ -22,20 +24,25 @@ const PaymentSuccessPage: React.FC = () => {
                     await orderApi.simulatePaymentSuccess(orderId);
                     // Clear storage after success
                     localStorage.removeItem('latestOrderId');
+                    // Refresh cart to reflect the cleared cart from backend
+                    await refreshCart();
                     setStatus('success');
                 } catch (error) {
                     console.error('Failed to verify payment:', error);
-                    // Even if it fails (e.g. already verified), show success UI
+                    // Even if it fails (e.g. already verified), show success UI and refresh cart
+                    await refreshCart();
                     setStatus('success');
                 }
             } else {
                 console.warn('No order ID found for verification');
+                // Still refresh cart to ensure UI is in sync
+                await refreshCart();
                 setStatus('success');
             }
         };
 
         verifyPayment();
-    }, []);
+    }, [refreshCart]);
 
     if (status === 'loading') {
         return (

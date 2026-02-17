@@ -12,6 +12,8 @@
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/CartController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/CartItemController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/CategoryController.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/CategoryDebugController.java
+/Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/DebugController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/HomeController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/OrderController.java
 /Users/bhanuka/Desktop/mongo p/EcommerceGroup/backend/src/main/java/com/example/backend/controller/PaymentController.java
